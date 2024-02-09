@@ -24,7 +24,7 @@ public class GatewayController {
 	@GetMapping("/first")
 	public ResponseEntity<ResponseTo> getFirstMsg() {
 //jhgsa
-		Mono<String> mono = webClient.get().uri("http://localhost:8081/first").retrieve().bodyToMono(String.class);
+		Mono<String> mono = webClient.get().uri("http://first:8081/first").retrieve().bodyToMono(String.class);
 
 		ResponseTo to = new ResponseTo();
 		to.setMsg(mono.block());
@@ -34,7 +34,7 @@ public class GatewayController {
 	@GetMapping("/second")
 	public ResponseEntity<ResponseTo> getSecondMsg() {
 
-		Mono<String> mono = webClient.get().uri("http://localhost:8084/second").retrieve().bodyToMono(String.class);
+		Mono<String> mono = webClient.get().uri("http://second:8084/second").retrieve().bodyToMono(String.class);
 
 		ResponseTo to = new ResponseTo();
 		to.setMsg(mono.block());
@@ -44,7 +44,7 @@ public class GatewayController {
 	@GetMapping("/first-second")
 	public ResponseEntity<ResponseTo> getFirstSecondMsg() {
 
-		Mono<String> mono = webClient.get().uri("http://localhost:8081/first/call").retrieve().bodyToMono(String.class);
+		Mono<String> mono = webClient.get().uri("http://first:8081/first/call").retrieve().bodyToMono(String.class);
 
 		ResponseTo to = new ResponseTo();
 		to.setMsg(mono.block());
