@@ -1,6 +1,7 @@
 package com.apigtservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,11 +21,17 @@ public class GatewayController {
 
 	@Autowired
 	private WebClient webClient;
+	
+	@Value("${base.url.first}")
+	private String baseUrlFirst;
 
+	@Value("${base.url.second}")
+	private String baseUrlSecond;
+	
 	@GetMapping("/first")
 	public ResponseEntity<ResponseTo> getFirstMsg() {
 //jhgsa
-		Mono<String> mono = webClient.get().uri("http://first:8081/first").retrieve().bodyToMono(String.class);
+		Mono<String> mono = webClient.get().uri(baseUrlFirst+"/first").retrieve().bodyToMono(String.class);
 
 		ResponseTo to = new ResponseTo();
 		to.setMsg(mono.block());
@@ -34,17 +41,17 @@ public class GatewayController {
 	@GetMapping("/second")
 	public ResponseEntity<ResponseTo> getSecondMsg() {
 
-		Mono<String> mono = webClient.get().uri("http://second:8084/second").retrieve().bodyToMono(String.class);
+		Mono<String> mono = webClient.get().uri(baseUrlSecond+"/second").retrieve().bodyToMono(String.class);
 
 		ResponseTo to = new ResponseTo();
 		to.setMsg(mono.block());
 		return new ResponseEntity<ResponseTo>(to, HttpStatus.OK);
 	}
 
-	@GetMapping("/first-second")
+	@GetMapping("/firstsecond")
 	public ResponseEntity<ResponseTo> getFirstSecondMsg() {
 
-		Mono<String> mono = webClient.get().uri("http://first:8081/first/call").retrieve().bodyToMono(String.class);
+		Mono<String> mono = webClient.get().uri(baseUrlFirst+"/first/call").retrieve().bodyToMono(String.class);
 
 		ResponseTo to = new ResponseTo();
 		to.setMsg(mono.block());
